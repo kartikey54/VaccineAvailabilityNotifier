@@ -33,7 +33,6 @@ async function checkAvailability() {
 
     let datesArray = await fetchNext10Days();
     datesArray.forEach(date => {
-        console.log({date})
         getSlotsForDate(date);
     })
 }
@@ -53,7 +52,7 @@ function getSlotsForDate(DATE) {
             let sessions = slots.data.sessions;
             let validSlots = sessions.filter(slot => slot.min_age_limit <= AGE &&  slot.available_capacity > 0)
             console.log({date:DATE, validSlots: validSlots.length})
-            if(validSlots.length > 1) {
+            if(validSlots.length > 0) {
                 notifyMe(validSlots);
             }
         })
@@ -62,7 +61,9 @@ function getSlotsForDate(DATE) {
         });
 }
 
-async function notifyMe(validSlots){
+async function
+
+notifyMe(validSlots){
     let slotDetails = JSON.stringify(validSlots, null, '\t');
     notifier.sendEmail(EMAIL, 'VACCINE AVAILABLE', slotDetails, (err, result) => {
         if(err) {
