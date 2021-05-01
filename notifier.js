@@ -11,7 +11,7 @@ let nodemailerTransporter = nodemailer.createTransport({
 
 exports.sendEmail = function (email, subjectLine, slotDetails, callback) {
     let options = {
-        from: 'support@leapgrad.com',
+        from: String('Vaccine Checker ' + process.env.EMAIL),
         to: email,
         subject: subjectLine,
         text: 'Vaccine available. Details: \n\n' + slotDetails
