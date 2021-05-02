@@ -9,13 +9,12 @@ let nodemailerTransporter = nodemailer.createTransport({
 });
 
 function createTemplate(slotDetails, date){
-    console.log(slotDetails)
     let message = `Hi, 
     <br/>
     Vaccine is available on <strong> ${date} </strong> in the following centers: 
     <br/><br/>
     `
-    for(const slot of slotDe){
+    for(const slot of slotDetails){
         let slotBody = `<strong> Center Name: ${slot.name} </strong> <br/>
         Location: ${slot.block_name}, ${slot.state_name}, ${slot.pincode} <br/>
         From ${slot.from} to ${slot.to} <br/>
