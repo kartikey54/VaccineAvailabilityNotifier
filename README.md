@@ -18,7 +18,7 @@ Step 4) Download and Install Node JS:
 https://nodejs.org/en/download/
 \
 \
-Step 5) Open the Command Prompt, go to your code folder (type 'cd <path-to-your-folder>') and run the command: npm i && pm2 start vaccineNotifier.js
+Step 5) Open the Command Prompt, go to your code folder (type 'cd path-to-your-folder') and run the command: npm i && pm2 start vaccineNotifier.js
 \
 \
 To close the app run: pm2 stop vaccineNotifier.js && pm2 delete vaccineNotifier.js
