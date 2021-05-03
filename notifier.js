@@ -1,12 +1,4 @@
-let nodemailer = require('nodemailer');
-
-let nodemailerTransporter = nodemailer.createTransport({
-    service: 'Gmail',
-    auth: {
-        user: String(process.env.EMAIL),
-        pass: String(process.env.APPLICATION_PASSWORD)
-    }
-});
+const sendEmail  = require('./sendEmail');
 
 function createTemplate(slotDetails, date){
     let message = `Hi, 
@@ -34,19 +26,7 @@ function createTemplate(slotDetails, date){
 }
 
 
-exports.sendEmail = function (email, subjectLine, slotDetails, date, callback) {
+exports.notifyUser = function (email, subjectLine, slotDetails, date, callback) {
     let message = createTemplate(slotDetails, date)
-
-    let options = {
-        from: String('Vaccine Checker ' + process.env.EMAIL),
-        to: email,
-        subject: subjectLine,
-        html: message
-    };
-    nodemailerTransporter.sendMail(options, (error, info) => {
-        if (error) {
-            return callback(error);
-        }
-        callback(error, info);
-    });
+    sendEmail.sendEmail(email, subjectLine, message)
 };

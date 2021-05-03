@@ -3,6 +3,7 @@ const moment = require('moment');
 const cron = require('node-cron');
 const axios = require('axios');
 const notifier = require('./notifier');
+const sendEmail  = require('./sendEmail');
 /**
 Step 1) Enable application access on your gmail with steps given here:
  https://support.google.com/accounts/answer/185833?p=InvalidSecondFactor&visit_id=637554658548216477-2576856839&rd=1
@@ -20,6 +21,9 @@ const AGE = process.env.AGE
 
 async function main(){
     try {
+        let subject = "Vaccine Availability Notifier"
+        let body = "Vaccine Availability Notifier service has begun. You will be notified when the slots are available. Stay home. Stay Safe."
+        sendEmail.sendEmail(EMAIL, subject, body)
         cron.schedule('* * * * *', async () => {
              await checkAvailability();
         });
@@ -64,7 +68,7 @@ function getSlotsForDate(DATE) {
 async function
 
 notifyMe(validSlots, date){
-    notifier.sendEmail(EMAIL, 'VACCINE AVAILABLE', validSlots, date, (err, result) => {
+    notifier.notifyUser(EMAIL, 'VACCINE AVAILABLE', validSlots, date, (err, result) => {
         if(err) {
             console.error({err});
         }
