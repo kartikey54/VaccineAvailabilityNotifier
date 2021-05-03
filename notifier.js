@@ -11,7 +11,7 @@ let nodemailerTransporter = nodemailer.createTransport({
 function createTemplate(slotDetails, date){
     let message = `Hi, 
     <br/>
-    Vaccine is available on <strong> ${date} </strong> in the following centers: 
+    Vaccine is available on <strong> ${date} </strong> in the following center(s): 
     <br/><br/>
     `
     for(const slot of slotDetails){
@@ -20,7 +20,7 @@ function createTemplate(slotDetails, date){
         From ${slot.from} to ${slot.to} <br/>
         Fee Type: ${slot.fee_type} <br/>
         Fee: ${slot.fee} rupees <br/>
-        Available Capacity: ${slot.available_capacity} doses available <br/>
+        Available Capacity: ${slot.available_capacity} dose(s) available <br/>
         Vaccine: ${slot.vaccine} <br/>
         Slots Available: <br/>`
         for(const x of slot.slots){

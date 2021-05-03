@@ -64,8 +64,7 @@ function getSlotsForDate(DATE) {
 async function
 
 notifyMe(validSlots, date){
-    let slotDetails = JSON.stringify(validSlots, null, '\t');
-    notifier.sendEmail(EMAIL, 'VACCINE AVAILABLE', slotDetails, date, (err, result) => {
+    notifier.sendEmail(EMAIL, 'VACCINE AVAILABLE', validSlots, date, (err, result) => {
         if(err) {
             console.error({err});
         }
