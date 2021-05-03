@@ -40,7 +40,7 @@ async function checkAvailability() {
 function getSlotsForDate(DATE) {
     let config = {
         method: 'get',
-        url: 'https://cdn-api.co-vin.in/api/v2/appointment/sessions/public/findByPin?pincode=' + PINCODE + '&date=' + DATE,
+        url: 'https://cdn-api.co-vin.in/api/v2/appointment/sessions/public/findByDistrict?district_id=' + PINCODE + '&date=' + DATE,
         headers: {
             'accept': 'application/json',
             'Accept-Language': 'hi_IN'
@@ -65,7 +65,7 @@ async function
 
 notifyMe(validSlots, date){
     let slotDetails = JSON.stringify(validSlots, null, '\t');
-    notifier.sendEmail(EMAIL, 'VACCINE AVAILABLE', slotDetails, date, (err, result) => {
+    notifier.sendEmail(EMAIL, 'VACCINE AVAILABLE', validSlots, date, (err, result) => {
         if(err) {
             console.error({err});
         }
@@ -75,7 +75,7 @@ notifyMe(validSlots, date){
 async function fetchNext10Days(){
     let dates = [];
     let today = moment();
-    for(let i = 0 ; i < 10 ; i ++ ){
+    for(let i = 0 ; i < 20 ; i ++ ){
         let dateString = today.format('DD-MM-YYYY')
         dates.push(dateString);
         today.add(1, 'day');
