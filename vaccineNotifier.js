@@ -64,8 +64,8 @@ function getSlotsForDate(DATE) {
 async function
 
 notifyMe(validSlots, date){
-    let slotDetails = JSON.stringify(validSlots, null, '\t');
-    notifier.sendEmail(EMAIL, 'VACCINE AVAILABLE', slotDetails, date, (err, result) => {
+    // let slotDetails = JSON.stringify(validSlots, null, '\t');
+    notifier.sendEmail(EMAIL, 'VACCINE AVAILABLE', validSlots, date, (err, result) => {
         if(err) {
             console.error({err});
         }
@@ -85,4 +85,5 @@ async function fetchNext10Days(){
 
 
 main()
-    .then(() => {console.log('Vaccine availability checker started.');});
+    .then(() => {console.log('Vaccine availability checker started.')})
+    .catch((err) => {console.log(err)});
