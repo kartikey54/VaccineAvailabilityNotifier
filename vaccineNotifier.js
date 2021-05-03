@@ -5,7 +5,7 @@ const axios = require('axios');
 const notifier = require('./notifier');
 /**
 Step 1) Enable application access on your gmail with steps given here:
- https://support.google.com/accounts/answer/185833?p=InvalidSecondFactor&visit_id=637554658548216477-2576856839&rd=1
+ https://support.google.com/accounts/answer/185833
 
 Step 2) Enter the details in the file .env, present in the same folder
 
