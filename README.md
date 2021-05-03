@@ -12,6 +12,7 @@ https://support.google.com/accounts/answer/185833?p=InvalidSecondFactor&visit_id
 \
 Step 2) Enter the details in the file `.env` present in the same folder.
 \
+\
 Step 3) Add the entries for different people in `find_entries.json` file. For each person, below entries are needed.
 `find_by`: either `district` or `pincode`\
 `find_value`: value for a valid district_id or 6-digit PIN code (to find out your district_id, go to https://www.cowin.gov.in/home -> launch Network Inspector in your browser, under "Check your nearest vaccination center and slots availability", select your state and district and hit the "Search" button -> check the value sent as district_id in the calendarByDistrict API request)\
