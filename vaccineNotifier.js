@@ -83,7 +83,7 @@ notifyMe(validSlots, date, pin){
 async function fetchNext10Days(){
     let dates = [];
     let today = moment();
-    for(let i = 0 ; i < 2 ; i ++ ){
+    for(let i = 0 ; i < 10 ; i ++ ){
         let dateString = today.format('DD-MM-YYYY')
         dates.push(dateString);
         today.add(1, 'day');
