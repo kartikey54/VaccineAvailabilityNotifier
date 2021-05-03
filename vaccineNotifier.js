@@ -55,6 +55,7 @@ function getSlotsForDate(date, findBy, findValue, age, toEmail) {
             let validSlots = sessions.filter(slot => slot.min_age_limit <= age && slot.available_capacity > 0)
             console.log({ date: date, validSlots: validSlots.length })
             if (validSlots.length > 0) {
+                console.log("Valid vaccination slot(s) found for user " + toEmail + ", sending an email")
                 notifyMe(validSlots, toEmail);
             }
         })
