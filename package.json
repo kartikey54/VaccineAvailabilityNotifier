@@ -13,10 +13,18 @@
     "cron": "^1.8.2",
     "dotenv": "^8.2.0",
     "moment": "^2.29.1",
+<<<<<<< HEAD
     "node-cron": "^3.0.0"
   },
   "devDependencies": {
     "nodemailer": "^6.6.0",
     "pm2": "^4.5.6"
+=======
+    "node-cron": "^3.0.0",
+    "pm2": "^4.5.6"
+  },
+  "devDependencies": {
+    "nodemailer": "^6.6.0"
+>>>>>>> fcd2aabd35afa5ce4817d7ade02c04469cbb1dcb
   }
 }
