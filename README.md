@@ -1,5 +1,5 @@
 # VaccineNotifier
-VaccineNotifier checks the CoWIN portal periodically to find vaccination slots available in your PIN code (or district) for your age. If found, it will send you emails as per the specified cron schedule until the slots are available.
+VaccineNotifier checks the CoWIN portal periodically to find vaccination slots available in your PIN code (or district) for your age. If found, it will send you emails as per the specified cron schedule until the slots are available. It is possible to search for multiple people at a time by specify their respective details in `find_entries.json` file.
 \
 \
 Important: Please specify the cron schedule in `vaccineNotifier.js` responsibly in order to avoid bombarding the CoWIN servers with multiple requests.
