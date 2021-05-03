@@ -20,6 +20,12 @@ const AGE = process.env.AGE
 
 async function main(){
     try {
+        notifier.sendEmail(EMAIL, 'Beginning to search for open slots', 'Start notification', (err, result) => {
+            if(err) {
+                console.error({err});
+            }
+        });
+
         cron.schedule('* * * * *', async () => {
              await checkAvailability();
         });
