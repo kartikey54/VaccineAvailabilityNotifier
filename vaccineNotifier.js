@@ -14,7 +14,9 @@ Step 3) On your terminal run: npm i && pm2 start vaccineNotifier.js
 To close the app, run: pm2 stop vaccineNotifier.js && pm2 delete vaccineNotifier.js
  */
 
+const FIND_BY = process.env.FIND_BY
 const PINCODE = process.env.PINCODE
+const DISTRICT_ID = process.env.DISTRICT_ID
 const EMAIL = process.env.EMAIL
 const AGE = process.env.AGE
 
@@ -38,9 +40,17 @@ async function checkAvailability() {
 }
 
 function getSlotsForDate(DATE) {
+    const URL_FIND_BY_PINCODE = 'https://cdn-api.co-vin.in/api/v2/appointment/sessions/public/findByPin?pincode=' + PINCODE + '&date=' + DATE;
+    const URL_FIND_BY_DISTRICT = 'https://cdn-api.co-vin.in/api/v2/appointment/sessions/public/findByDistrict?district_id=' + DISTRICT_ID + '&date=' + DATE;
+    var url = FIND_BY === 'district' ? URL_FIND_BY_DISTRICT : URL_FIND_BY_PINCODE;
+    if (FIND_BY === 'district') {
+        console.log("Finding available slots by district for district_id " + DISTRICT_ID);
+    } else {
+        console.log("Finding available slots by pin code for pin " + PINCODE);
+    }
     let config = {
         method: 'get',
-        url: 'https://cdn-api.co-vin.in/api/v2/appointment/sessions/public/findByPin?pincode=' + PINCODE + '&date=' + DATE,
+        url:  url,
         headers: {
             'accept': 'application/json',
             'Accept-Language': 'hi_IN'
