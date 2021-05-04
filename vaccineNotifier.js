@@ -51,7 +51,7 @@ const getConfig = (pincode, date) => {
 async function getSlotsForDate(DATE) {
     const PINCODES_ARR = PINCODE.split(',');
 
-    let promisesArr = PINCODES_ARR.forEach((pincode) => axios(getConfig(pincode, DATE))
+    let promisesArr = PINCODES_ARR.map((pincode) => axios(getConfig(pincode, DATE))
       .then(function (slots) {
           let sessions = slots.data.sessions;
           let validSlots = sessions.filter(slot => slot.min_age_limit <= AGE &&  slot.available_capacity > 0)
