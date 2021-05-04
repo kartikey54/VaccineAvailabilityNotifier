@@ -1,0 +1,6 @@
+C:\Users\Rajat Kumar\Desktop\Demo c#\CS_DemoDelegate\DemoLab\obj\Debug\DemoLab.csprojAssemblyReference.cache
+C:\Users\Rajat Kumar\Desktop\Demo c#\CS_DemoDelegate\DemoLab\obj\Debug\DemoLab.csproj.CoreCompileInputs.cache
+C:\Users\Rajat Kumar\Desktop\Demo c#\CS_DemoDelegate\DemoLab\bin\Debug\DemoLab.dll
+C:\Users\Rajat Kumar\Desktop\Demo c#\CS_DemoDelegate\DemoLab\bin\Debug\DemoLab.pdb
+C:\Users\Rajat Kumar\Desktop\Demo c#\CS_DemoDelegate\DemoLab\obj\Debug\DemoLab.dll
+C:\Users\Rajat Kumar\Desktop\Demo c#\CS_DemoDelegate\DemoLab\obj\Debug\DemoLab.pdb

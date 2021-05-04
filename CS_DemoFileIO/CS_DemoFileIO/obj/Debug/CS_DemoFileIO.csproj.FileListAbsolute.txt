@@ -1,0 +1,7 @@
+C:\Users\Rajat Kumar\Desktop\Demo c#\CS_DemoFileIO\CS_DemoFileIO\bin\Debug\CS_DemoFileIO.exe.config
+C:\Users\Rajat Kumar\Desktop\Demo c#\CS_DemoFileIO\CS_DemoFileIO\bin\Debug\CS_DemoFileIO.exe
+C:\Users\Rajat Kumar\Desktop\Demo c#\CS_DemoFileIO\CS_DemoFileIO\bin\Debug\CS_DemoFileIO.pdb
+C:\Users\Rajat Kumar\Desktop\Demo c#\CS_DemoFileIO\CS_DemoFileIO\obj\Debug\CS_DemoFileIO.csprojAssemblyReference.cache
+C:\Users\Rajat Kumar\Desktop\Demo c#\CS_DemoFileIO\CS_DemoFileIO\obj\Debug\CS_DemoFileIO.csproj.CoreCompileInputs.cache
+C:\Users\Rajat Kumar\Desktop\Demo c#\CS_DemoFileIO\CS_DemoFileIO\obj\Debug\CS_DemoFileIO.exe
+C:\Users\Rajat Kumar\Desktop\Demo c#\CS_DemoFileIO\CS_DemoFileIO\obj\Debug\CS_DemoFileIO.pdb
