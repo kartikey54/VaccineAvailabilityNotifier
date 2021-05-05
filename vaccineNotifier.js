@@ -22,7 +22,7 @@ const PREFERRED_VACCINE_LIST = process.env.PREFERRED_VACCINE.split(',')
 
 async function main(){
     try {
-        cron.schedule('* * * * *', async () => {
+        cron.schedule('*/5 * * * *', async () => {
              await checkAvailability();
         });
     } catch (e) {
