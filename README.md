@@ -17,3 +17,6 @@ To close the app run: pm2 stop vaccineNotifier.js && pm2 delete vaccineNotifier.
 
 Here's a sample of the resultant emails:
 ![image info](./sampleEmail.png)
+
+Sample for Start Notification:
+![image info](./StartNotification.png)
