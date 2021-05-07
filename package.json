@@ -5,7 +5,8 @@
   "main": "vaccineNotifier.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "pm2 start vaccineNotifier.js"
+    "start": "pm2 start vaccineNotifier.js",
+    "stop": "pm2 stop vaccineNotifier.js && pm2 delete vaccineNotifier.js"
   },
   "author": "sharmakartikey54@gmail.com",
   "license": "ISC",
