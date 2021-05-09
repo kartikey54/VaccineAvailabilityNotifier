@@ -17,10 +17,10 @@ To close the app, run: pm2 stop vaccineNotifier.js && pm2 delete vaccineNotifier
 const PINCODE = process.env.PINCODE
 const EMAIL = process.env.EMAIL
 const AGE = process.env.AGE
-
+const QUANTITY=process.env.QUANTITY;
 async function main(){
     try {
-        cron.schedule('* * * * *', async () => {
+        cron.schedule('* * * * * *', async () => {
              await checkAvailability();
         });
     } catch (e) {
@@ -30,7 +30,6 @@ async function main(){
 }
 
 async function checkAvailability() {
-
     let datesArray = await fetchNext10Days();
     datesArray.forEach(date => {
         getSlotsForDate(date);
@@ -52,7 +51,7 @@ function getSlotsForDate(DATE) {
             let sessions = slots.data.sessions;
             let validSlots = sessions.filter(slot => slot.min_age_limit <= AGE &&  slot.available_capacity > 0)
             console.log({date:DATE, validSlots: validSlots.length})
-            if(validSlots.length > 0) {
+            if(validSlots.length >= QUANTITY) {
                 notifyMe(validSlots);
             }
         })
@@ -61,18 +60,16 @@ function getSlotsForDate(DATE) {
         });
 }
 
-async function
-
-notifyMe(validSlots){
+async function notifyMe(validSlots) {
     let slotDetails = JSON.stringify(validSlots, null, '\t');
     notifier.sendEmail(EMAIL, 'VACCINE AVAILABLE', slotDetails, (err, result) => {
         if(err) {
             console.error({err});
         }
-    })
+    });
 };
 
-async function fetchNext10Days(){
+async function fetchNext10Days() {
     let dates = [];
     let today = moment();
     for(let i = 0 ; i < 10 ; i ++ ){
@@ -83,6 +80,4 @@ async function fetchNext10Days(){
     return dates;
 }
 
-
-main()
-    .then(() => {console.log('Vaccine availability checker started.');});
+main().then(() => {console.log('Vaccine availability checker started.');});
