@@ -17,7 +17,7 @@ To close the app, run: pm2 stop vaccineNotifier.js && pm2 delete vaccineNotifier
 const PINCODE = process.env.PINCODE
 const EMAIL = process.env.EMAIL
 const AGE = process.env.AGE
-const DISTRRICT = process.env.DISTRRICT
+const DISTRICT = process.env.DISTRICT
 async function main(){
     try {
         cron.schedule('* * * * *', async () => {
@@ -40,7 +40,7 @@ async function checkAvailability() {
 function getSlotsForDate(DATE) {
     let config = {
         method: 'get',
-        url: 'https://cdn-api.co-vin.in/api/v2/appointment/sessions/calendarByDistrict?district_id=392&date='+DATE,
+        url: 'https://cdn-api.co-vin.in/api/v2/appointment/sessions/calendarByDistrict?district_id='+ DISTRICT +'&date='+DATE,
         headers: {
             'accept': 'application/json',
             'Accept-Language': 'hi_IN',
