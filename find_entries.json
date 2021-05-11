@@ -2,37 +2,13 @@
     {
         "find_by": "district",
         "find_value": "363",
-        "age": 32,
-        "to_email": "dharadagli@gmail.com,k_shashil@hotmail.com,prasad_p17@yahoo.co.in"
+        "age": 30,
+        "to_email": "user1@xyz.com"
     },
     {
         "find_by": "pincode",
         "find_value": "442401",
         "age": 32,
-        "to_email": "teena.n.gupta@gmail.com"
-    },
-    {
-        "find_by": "pincode",
-        "find_value": "560103",
-        "age": 35,
-        "to_email": "sumeet.sl@gmail.com"
-    },
-    {
-        "find_by": "pincode",
-        "find_value": "560037",
-        "age": 32,
-        "to_email": "jollysingh.name@gmail.com"
-    },
-    {
-        "find_by": "pincode",
-        "find_value": "411015",
-        "age": 30,
-        "to_email": "hardik.parekh4@gmail.com,agrawalsonakshi@gmail.com,pritamrathi92@gmail.com"
-    },
-    {
-        "find_by": "district",
-        "find_value": "364",
-        "age": 52,
-        "to_email": "girish22111990@gmail.com"
+        "to_email": "user1@xyz.com,user2@xyz.com"
     }
 ]
