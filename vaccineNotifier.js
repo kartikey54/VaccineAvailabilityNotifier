@@ -9,7 +9,7 @@ console.log("Entries: " + JSON.stringify(findEntries));
 
 async function main() {
     try {
-        cron.schedule('*/2 * * * *', async () => {
+        cron.schedule('*/5 * * * *', async () => {
             await checkAvailability();
         });
     } catch (e) {
@@ -45,7 +45,8 @@ function getSlotsForDate(date, findBy, findValue, age, toEmail) {
         url: url,
         headers: {
             'accept': 'application/json',
-            'Accept-Language': 'hi_IN'
+            'Accept-Language': 'hi_IN',
+            'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/88.0.4324.192 Safari/537.36'
         }
     };
 
@@ -67,12 +68,27 @@ function getSlotsForDate(date, findBy, findValue, age, toEmail) {
 async function
 
     notifyMe(validSlots, toEmail) {
+    let numVaccines = 0;
+    validSlots.forEach(slot => {
+        numVaccines += slot.available_capacity;
+    });
+    let subject = numVaccines + ' vaccines available near you';
     let slotDetails = JSON.stringify(validSlots, null, '\t');
-    notifier.sendEmail(toEmail, 'Vaccine available', slotDetails, (err, result) => {
-        if (err) {
-            console.error({ err });
-        }
-    })
+    if (toEmail.includes(',')) {
+        toEmail.split(',').forEach(email => {
+            notifier.sendEmail(email, subject, slotDetails, (err, result) => {
+                if (err) {
+                    console.error({ err });
+                }
+            })
+        });
+    } else {
+        notifier.sendEmail(toEmail, subject, slotDetails, (err, result) => {
+            if (err) {
+                console.error({ err });
+            }
+        });
+    }
 };
 
 async function fetchNext10Days() {
