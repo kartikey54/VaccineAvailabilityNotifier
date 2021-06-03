@@ -1,0 +1,58 @@
+#!/usr/bin/env node
+const axios=require('axios');
+const chalk=require('chalk');
+const moment=require('moment');
+const url = "https://quotes.rest/qod"
+const getAvailability=require('../services/getAvailabilityonDate');
+ help =() => {
+    console.log(chalk.white(`./logger help  # Use It for asking help \n 
+./logger AGE PINCODE NEXTDAYS  # pass exactly 3 parameters in the given order for displaying vaccine availability based on the filter\n`));
+ }
+ errorLog=(error) => {
+   console.log(chalk.red(`${error}`));
+ }
+ // console.log(chalk.blue(`${(process.argv)[2]}`));
+ 
+ if((process.argv)[2]=="help") {
+   help();
+ }
+ callAPI = async (PINCODE,DAYS,QUANTITY, AGE) => {
+    let today=moment();
+    for(let i=0 ;i <10;i++) {
+      let DATE = today.format('DD-MM-YYYY');  
+      let response = await getAvailability(PINCODE,DATE,QUANTITY,AGE);
+      if(response.status=='error') {
+        console.log(chalk.red('error occured try again!'));
+      }
+      else {
+        console.log(chalk.blue(`Date:${DATE}`));
+        const slots=response.data.validSlots;
+        if(slots.length == 0) {
+          console.log( chalk.bgRed("No free Slot Available"));
+          
+        }
+        else {
+          console.log(chalk.yellow("Total Slots Available :\t")+chalk.bgBlue(slots.length));
+          slots.map((slot) => {
+            console.log(chalk.yellow("Vaccine :\t")+ chalk.green(slot.vaccine));
+            console.log(chalk.yellow("Fees :\t") + chalk.green(slot.fee));
+            console.log(chalk.yellow("Timings are : \t")+chalk.blue(slot.slots.length));
+            slot.slots.map((sl) => {
+              console.log(chalk.blue(sl));
+            });
+          });
+        }
+      }
+      today.add(1,'day');
+  }
+ }
+ if(process.argv.length==5) {
+    const DAYS=process.argv[4];
+    const AGE=process.argv[2];
+    const PINCODE=process.argv[3];
+    const QUANTITY=1;
+    
+    callAPI(PINCODE,DAYS,QUANTITY,AGE);
+  }
+
+// prompt verison I have to learn from here https://scotch.io/tutorials/building-cli-applications-with-nodejs. and implement it.'
