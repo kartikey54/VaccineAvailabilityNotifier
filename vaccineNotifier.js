@@ -37,28 +37,37 @@ async function checkAvailability() {
     })
 }
 
-function getSlotsForDate(DATE) {
-    let config = {
+const getConfig = (pincode, date) => {
+    return {
         method: 'get',
-        url: 'https://cdn-api.co-vin.in/api/v2/appointment/sessions/public/findByPin?pincode=' + PINCODE + '&date=' + DATE,
+        url: 'https://cdn-api.co-vin.in/api/v2/appointment/sessions/public/findByPin?pincode=' + pincode.trim() + '&date=' + date,
         headers: {
             'accept': 'application/json',
             'Accept-Language': 'hi_IN'
         }
     };
+}
 
-    axios(config)
-        .then(function (slots) {
-            let sessions = slots.data.sessions;
-            let validSlots = sessions.filter(slot => slot.min_age_limit <= AGE &&  slot.available_capacity > 0)
-            console.log({date:DATE, validSlots: validSlots.length})
-            if(validSlots.length > 0) {
-                notifyMe(validSlots);
-            }
-        })
-        .catch(function (error) {
-            console.log(error);
-        });
+async function getSlotsForDate(DATE) {
+    const PINCODES_ARR = PINCODE.split(',');
+
+    let promisesArr = PINCODES_ARR.map((pincode) => axios(getConfig(pincode, DATE))
+      .then(function (slots) {
+          let sessions = slots.data.sessions;
+          let validSlots = sessions.filter(slot => slot.min_age_limit <= AGE &&  slot.available_capacity > 0)
+          console.log({date:DATE, pincode, validSlots: validSlots.length})
+          if(validSlots.length > 0) {
+              return notifyMe(validSlots);
+          }
+          return Promise.resolve();
+      })
+      .catch(function (error) {
+          console.log(error);
+          return Promise.reject();
+      }));
+    const results = await Promise.all(promisesArr.map(p => p.catch(e => e)));
+    const invalidResults = results.filter(result => result instanceof Error);
+    invalidResults.forEach(e => console.error(e));
 }
 
 async function
