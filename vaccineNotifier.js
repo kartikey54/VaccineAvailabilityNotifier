@@ -61,9 +61,7 @@ function getSlotsForDate(DATE) {
         });
 }
 
-async function
-
-notifyMe(validSlots){
+async function notifyMe(validSlots){
     let slotDetails = JSON.stringify(validSlots, null, '\t');
     notifier.sendEmail(EMAIL, 'VACCINE AVAILABLE', slotDetails, (err, result) => {
         if(err) {
@@ -80,6 +78,7 @@ async function fetchNext10Days(){
         dates.push(dateString);
         today.add(1, 'day');
     }
+    console.log(dates)
     return dates;
 }
 
