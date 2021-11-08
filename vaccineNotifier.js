@@ -32,28 +32,35 @@ async function main(){
 async function checkAvailability() {
 
     let datesArray = await fetchNext10Days();
+    let pinArray = process.env.MULTIPIN.split(' ');
     datesArray.forEach(date => {
-        getSlotsForDate(date);
+        console.log("pinArray:",pinArray)
+        for(const pinItem of pinArray){
+            console.log("pinItem",pinItem)
+            getSlotsForDate(date, pinItem);
+        }
     })
 }
 
-function getSlotsForDate(DATE) {
+function getSlotsForDate(DATE, PIN) {
+    console.log("date:",DATE);
     let config = {
         method: 'get',
-        url: 'https://cdn-api.co-vin.in/api/v2/appointment/sessions/public/findByPin?pincode=' + PINCODE + '&date=' + DATE,
+        url: 'https://cdn-api.co-vin.in/api/v2/appointment/sessions/public/findByPin?pincode=' + PIN + '&date=' + DATE,
         headers: {
             'accept': 'application/json',
             'Accept-Language': 'hi_IN'
-        }
+        }   
     };
 
     axios(config)
         .then(function (slots) {
             let sessions = slots.data.sessions;
+            console.log("slots:",sessions.length)
             let validSlots = sessions.filter(slot => slot.min_age_limit <= AGE &&  slot.available_capacity > 0)
             console.log({date:DATE, validSlots: validSlots.length})
             if(validSlots.length > 0) {
-                notifyMe(validSlots);
+                notifyMe(validSlots, DATE, PIN);
             }
         })
         .catch(function (error) {
@@ -63,9 +70,10 @@ function getSlotsForDate(DATE) {
 
 async function
 
-notifyMe(validSlots){
-    let slotDetails = JSON.stringify(validSlots, null, '\t');
-    notifier.sendEmail(EMAIL, 'VACCINE AVAILABLE', slotDetails, (err, result) => {
+notifyMe(validSlots, date, pin){
+    // let slotDetails = JSON.stringify(validSlots, null, '\t');
+    let slotDetails = validSlots
+    notifier.sendEmail(EMAIL, 'VACCINE AVAILABLE for ' + date + ' at '+pin, slotDetails, date, (err, result) => {
         if(err) {
             console.error({err});
         }
