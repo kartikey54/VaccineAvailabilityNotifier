@@ -20,6 +20,11 @@ const AGE = process.env.AGE
 
 async function main(){
     try {
+ 		     notifier.sendEmail(EMAIL, 'Started Scanning for AGE-'+AGE+' & PINCODE-'+PINCODE, 'Start notification', (err, result) => {
+        if(err) {
+            console.error({err});
+        }
+    })    
         cron.schedule('* * * * *', async () => {
              await checkAvailability();
         });
@@ -65,7 +70,7 @@ async function
 
 notifyMe(validSlots){
     let slotDetails = JSON.stringify(validSlots, null, '\t');
-    notifier.sendEmail(EMAIL, 'VACCINE AVAILABLE', slotDetails, (err, result) => {
+    notifier.sendEmail(EMAIL, 'VACCINE AVAILABLE', 'Slot Details: \n\n '+slotDetails, (err, result) => {
         if(err) {
             console.error({err});
         }
