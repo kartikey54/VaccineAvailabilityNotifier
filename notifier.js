@@ -1,25 +1,32 @@
-let nodemailer = require('nodemailer');
+const sendEmail  = require('./sendEmail');
 
-let nodemailerTransporter = nodemailer.createTransport({
-    service: 'Gmail',
-    auth: {
-        user: String(process.env.EMAIL),
-        pass: String(process.env.APPLICATION_PASSWORD)
-    }
-});
-
-
-exports.sendEmail = function (email, subjectLine, slotDetails, callback) {
-    let options = {
-        from: String('Vaccine Checker ' + process.env.EMAIL),
-        to: email,
-        subject: subjectLine,
-        text: 'Vaccine available. Details: \n\n' + slotDetails
-    };
-    nodemailerTransporter.sendMail(options, (error, info) => {
-        if (error) {
-            return callback(error);
+function createTemplate(slotDetails, date){
+    let message = `Hi, 
+    <br/>
+    Vaccine is available on <strong> ${date} </strong> in the following center(s): 
+    <br/><br/>
+    `
+    for(const slot of slotDetails){
+        let slotBody = `<strong> Center Name: ${slot.name} </strong> <br/>
+        Location: ${slot.block_name}, ${slot.state_name}, ${slot.pincode} <br/>
+        From ${slot.from} to ${slot.to} <br/>
+        Fee Type: ${slot.fee_type} <br/>
+        Fee: ${slot.fee} rupees <br/>
+        Available Capacity: ${slot.available_capacity} dose(s) available <br/>
+        Vaccine: ${slot.vaccine} <br/>
+        Slots Available: <br/>`
+        for(const x of slot.slots){
+            slotBody = `${slotBody} ${x} <br/>`
         }
-        callback(error, info);
-    });
+        slotBody = `${slotBody} <br/><br/>`
+        message = `${message} ${slotBody}`
+    }
+
+    return message
+}
+
+
+exports.notifyUser = function (email, subjectLine, slotDetails, date, callback) {
+    let message = createTemplate(slotDetails, date)
+    sendEmail.sendEmail(email, subjectLine, message)
 };
