@@ -1,0 +1,10 @@
+C:\Users\Rajat Kumar\Desktop\Demo c#\CS_DemoDelegate\CS_DemoDelegate\obj\Debug\CS_DemoDelegate.csproj.CoreCompileInputs.cache
+C:\Users\Rajat Kumar\Desktop\Demo c#\CS_DemoDelegate\CS_DemoDelegate\bin\Debug\CS_DemoDelegate.exe.config
+C:\Users\Rajat Kumar\Desktop\Demo c#\CS_DemoDelegate\CS_DemoDelegate\bin\Debug\CS_DemoDelegate.exe
+C:\Users\Rajat Kumar\Desktop\Demo c#\CS_DemoDelegate\CS_DemoDelegate\bin\Debug\CS_DemoDelegate.pdb
+C:\Users\Rajat Kumar\Desktop\Demo c#\CS_DemoDelegate\CS_DemoDelegate\bin\Debug\DemoLab.dll
+C:\Users\Rajat Kumar\Desktop\Demo c#\CS_DemoDelegate\CS_DemoDelegate\bin\Debug\DemoLab.pdb
+C:\Users\Rajat Kumar\Desktop\Demo c#\CS_DemoDelegate\CS_DemoDelegate\obj\Debug\CS_DemoDelegate.csprojAssemblyReference.cache
+C:\Users\Rajat Kumar\Desktop\Demo c#\CS_DemoDelegate\CS_DemoDelegate\obj\Debug\CS_DemoDelegate.csproj.CopyComplete
+C:\Users\Rajat Kumar\Desktop\Demo c#\CS_DemoDelegate\CS_DemoDelegate\obj\Debug\CS_DemoDelegate.exe
+C:\Users\Rajat Kumar\Desktop\Demo c#\CS_DemoDelegate\CS_DemoDelegate\obj\Debug\CS_DemoDelegate.pdb
