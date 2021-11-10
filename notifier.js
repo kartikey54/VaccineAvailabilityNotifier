@@ -9,12 +9,13 @@ let nodemailerTransporter = nodemailer.createTransport({
 });
 
 
-exports.sendEmail = function (email, subjectLine, slotDetails, callback) {
+exports.sendEmail = function (to, subject, html, textContent, callback) {
     let options = {
         from: String('Vaccine Checker ' + process.env.EMAIL),
-        to: email,
-        subject: subjectLine,
-        text: 'Vaccine available. Details: \n\n' + slotDetails
+        to,
+        subject,
+        text: 'Vaccine available. Details: \n\n' + textContent,
+        html,
     };
     nodemailerTransporter.sendMail(options, (error, info) => {
         if (error) {
