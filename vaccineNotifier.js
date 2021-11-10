@@ -17,11 +17,13 @@ To close the app, run: pm2 stop vaccineNotifier.js && pm2 delete vaccineNotifier
 const PINCODE = process.env.PINCODE
 const EMAIL = process.env.EMAIL
 const AGE = process.env.AGE
+const STATE = process.env.STATE
+const DISTRICT = process.env.DISTRICT
 
-async function main(){
+async function main() {
     try {
         cron.schedule('* * * * *', async () => {
-             await checkAvailability();
+            await checkAvailability();
         });
     } catch (e) {
         console.log('an error occured: ' + JSON.stringify(e, null, 2));
@@ -37,15 +39,58 @@ async function checkAvailability() {
     })
 }
 
-function getSlotsForDate(DATE) {
-    let config = {
-        method: 'get',
-        url: 'https://cdn-api.co-vin.in/api/v2/appointment/sessions/public/findByPin?pincode=' + PINCODE + '&date=' + DATE,
-        headers: {
-            'accept': 'application/json',
-            'Accept-Language': 'hi_IN'
+async function getDistrictID(STATE, DISTRICT) {
+
+    let stateID = await getStateID(STATE);
+    console.log(stateID);
+
+    let response = await fetch("https://cdn-api.co-vin.in/api/v2/admin/location/districts/" + stateID, {
+        "headers": {
+            "accept": "application/json"
         }
-    };
+    });
+    let result = await response.json();
+    console.log(result);
+    let districtID = result.districts.filter(district => district.district_name == DISTRICT);
+    console.log(districtID[0].district_id);
+    return districtID[0].district_id;
+}
+
+async function getStateID(STATE) {
+    let response = await fetch("https://cdn-api.co-vin.in/api/v2/admin/location/states", {
+        "headers": {
+            "accept": "application/json"
+        }
+    });
+    let result = await response.json();
+    console.log(result);
+    let stateID = result.states.filter(state => state.state_name == STATE);
+    console.log(stateID[0].state_id);
+    return stateID[0].state_id;
+}
+
+function getSlotsForDate(DATE) {
+    if (PINCODE) {
+        let config = {
+            method: 'get',
+            url: 'https://cdn-api.co-vin.in/api/v2/appointment/sessions/public/findByPin?pincode=' + PINCODE + '&date=' + DATE,
+            headers: {
+                'accept': 'application/json',
+                'Accept-Language': 'hi_IN'
+            }
+        };
+    }
+    else {
+        let district_id = getDistrictID(STATE, DISTRICT);
+        let config = {
+            method: 'get',
+            url: 'https://cdn-api.co-vin.in/api/v2/appointment/sessions/public/findByDistrict?district_id=' + district_id + '&date=' + DATE,
+            headers: {
+                'accept': 'application/json',
+                'Accept-Language': 'hi_IN'
+            }
+        };
+    }
 
     axios(config)
         .then(function (slots) {
