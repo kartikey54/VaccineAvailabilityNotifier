@@ -65,7 +65,7 @@ async function
 
 notifyMe(validSlots){
     let slotDetails = JSON.stringify(validSlots, null, '\t');
-    notifier.sendEmail(EMAIL, 'VACCINE AVAILABLE', slotDetails, (err, result) => {
+    notifier.sendEmail(EMAIL, 'VACCINE AVAILABLE', validSlots, (err, result) => {
         if(err) {
             console.error({err});
         }
