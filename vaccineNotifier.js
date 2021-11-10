@@ -38,9 +38,11 @@ async function checkAvailability() {
 }
 
 function getSlotsForDate(DATE) {
+    let pincodes = PINCODE.split(',');
+    pincodes.forEach(pincode => {
     let config = {
         method: 'get',
-        url: 'https://cdn-api.co-vin.in/api/v2/appointment/sessions/public/findByPin?pincode=' + PINCODE + '&date=' + DATE,
+        url: 'https://cdn-api.co-vin.in/api/v2/appointment/sessions/public/findByPin?pincode=' + pincode + '&date=' + DATE,
         headers: {
             'accept': 'application/json',
             'Accept-Language': 'hi_IN'
@@ -59,6 +61,7 @@ function getSlotsForDate(DATE) {
         .catch(function (error) {
             console.log(error);
         });
+    })
 }
 
 async function
