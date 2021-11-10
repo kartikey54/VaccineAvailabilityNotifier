@@ -1,8 +1,8 @@
 # VaccineNotifier
-VaccineNotifier checks the cowin portal periodically to find vaccination slots available in your pin code and for your age. If found, it will send you emails every minute until the slots are available.
 
+VaccineNotifier checks the cowin portal periodically to find vaccination slots available in your pin code and for your age. Optionally you can also give NO_OF_DAYS_TO_CHECK (default value is next 10 days) & and you also add your preferred vaccines(by default it considers all vaccines ). If there is match for your requirement, it will send you emails every minute until the slots are available.
 
-<font size="6"> Steps to run the script: </font> 
+<font size="6"> Steps to run the script: </font>
 
 Step 1) Enable application access on your gmail with steps given here:
 https://support.google.com/accounts/answer/185833?p=InvalidSecondFactor&visit_id=637554658548216477-2576856839&rd=1  

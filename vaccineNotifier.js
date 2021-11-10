@@ -17,10 +17,12 @@ To close the app, run: pm2 stop vaccineNotifier.js && pm2 delete vaccineNotifier
 const PINCODE = process.env.PINCODE
 const EMAIL = process.env.EMAIL
 const AGE = process.env.AGE
+const NO_OF_DAYS_TO_CHECK = Number(process.env.NO_OF_DAYS_TO_CHECK) || 10
+const PREFERRED_VACCINE_LIST = process.env.PREFERRED_VACCINE.split(',')
 
 async function main(){
     try {
-        cron.schedule('* * * * *', async () => {
+        cron.schedule('*/5 * * * *', async () => {
              await checkAvailability();
         });
     } catch (e) {
@@ -31,7 +33,7 @@ async function main(){
 
 async function checkAvailability() {
 
-    let datesArray = await fetchNext10Days();
+    let datesArray = await fetchNextDays();
     datesArray.forEach(date => {
         getSlotsForDate(date);
     })
@@ -50,7 +52,7 @@ function getSlotsForDate(DATE) {
     axios(config)
         .then(function (slots) {
             let sessions = slots.data.sessions;
-            let validSlots = sessions.filter(slot => slot.min_age_limit <= AGE &&  slot.available_capacity > 0)
+            let validSlots = sessions.filter(slot => slot.min_age_limit <= AGE &&  slot.available_capacity > 0 && (PREFERRED_VACCINE_LIST.length >0 || PREFERRED_VACCINE_LIST.indexOf(slot.vaccine)) )
             console.log({date:DATE, validSlots: validSlots.length})
             if(validSlots.length > 0) {
                 notifyMe(validSlots);
@@ -72,10 +74,10 @@ notifyMe(validSlots){
     })
 };
 
-async function fetchNext10Days(){
+async function fetchNextDays(){
     let dates = [];
     let today = moment();
-    for(let i = 0 ; i < 10 ; i ++ ){
+    for(let i = 0 ; i < NO_OF_DAYS_TO_CHECK ; i ++ ){
         let dateString = today.format('DD-MM-YYYY')
         dates.push(dateString);
         today.add(1, 'day');
