@@ -20,6 +20,12 @@ const AGE = process.env.AGE
 
 async function main(){
     try {
+        notifier.sendEmail(EMAIL, 'Beginning to search for open slots', 'Start notification', (err, result) => {
+            if(err) {
+                console.error({err});
+            }
+        });
+
         cron.schedule('* * * * *', async () => {
              await checkAvailability();
         });
@@ -64,7 +70,7 @@ function getSlotsForDate(DATE) {
 async function
 
 notifyMe(validSlots){
-    let slotDetails = JSON.stringify(validSlots, null, '\t');
+    let slotDetails = 'Vaccine available. Details: \n\n' + JSON.stringify(validSlots, null, '\t');
     notifier.sendEmail(EMAIL, 'VACCINE AVAILABLE', slotDetails, (err, result) => {
         if(err) {
             console.error({err});
