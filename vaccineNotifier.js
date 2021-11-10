@@ -3,25 +3,14 @@ const moment = require('moment');
 const cron = require('node-cron');
 const axios = require('axios');
 const notifier = require('./notifier');
-/**
-Step 1) Enable application access on your gmail with steps given here:
- https://support.google.com/accounts/answer/185833?p=InvalidSecondFactor&visit_id=637554658548216477-2576856839&rd=1
+const findEntries = require('./find_entries.json');
 
-Step 2) Enter the details in the file .env, present in the same folder
+console.log("Entries: " + JSON.stringify(findEntries));
 
-Step 3) On your terminal run: npm i && pm2 start vaccineNotifier.js
-
-To close the app, run: pm2 stop vaccineNotifier.js && pm2 delete vaccineNotifier.js
- */
-
-const PINCODE = process.env.PINCODE
-const EMAIL = process.env.EMAIL
-const AGE = process.env.AGE
-
-async function main(){
+async function main() {
     try {
-        cron.schedule('* * * * *', async () => {
-             await checkAvailability();
+        cron.schedule('*/5 * * * *', async () => {
+            await checkAvailability();
         });
     } catch (e) {
         console.log('an error occured: ' + JSON.stringify(e, null, 2));
@@ -32,28 +21,43 @@ async function main(){
 async function checkAvailability() {
 
     let datesArray = await fetchNext10Days();
-    datesArray.forEach(date => {
-        getSlotsForDate(date);
-    })
+
+    findEntries.forEach(entry => {
+        var findBy = entry.find_by;
+        var findValue = entry.find_value;
+        var age = entry.age;
+        var toEmail = entry.to_email;
+        console.log("Finding available slots for " + toEmail + " of age " + age + " by " + findBy + " " + findValue);
+
+        datesArray.forEach(date => {
+            getSlotsForDate(date, findBy, findValue, age, toEmail);
+        });
+    });
 }
 
-function getSlotsForDate(DATE) {
+function getSlotsForDate(date, findBy, findValue, age, toEmail) {
+    const URL_FIND_BY_PINCODE = 'https://cdn-api.co-vin.in/api/v2/appointment/sessions/public/findByPin?pincode=' + findValue + '&date=' + date;
+    const URL_FIND_BY_DISTRICT = 'https://cdn-api.co-vin.in/api/v2/appointment/sessions/public/findByDistrict?district_id=' + findValue + '&date=' + date;
+    var url = findBy === 'district' ? URL_FIND_BY_DISTRICT : URL_FIND_BY_PINCODE;
+
     let config = {
         method: 'get',
-        url: 'https://cdn-api.co-vin.in/api/v2/appointment/sessions/public/findByPin?pincode=' + PINCODE + '&date=' + DATE,
+        url: url,
         headers: {
             'accept': 'application/json',
-            'Accept-Language': 'hi_IN'
+            'Accept-Language': 'hi_IN',
+            'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/88.0.4324.192 Safari/537.36'
         }
     };
 
     axios(config)
         .then(function (slots) {
             let sessions = slots.data.sessions;
-            let validSlots = sessions.filter(slot => slot.min_age_limit <= AGE &&  slot.available_capacity > 0)
-            console.log({date:DATE, validSlots: validSlots.length})
-            if(validSlots.length > 0) {
-                notifyMe(validSlots);
+            let validSlots = sessions.filter(slot => slot.min_age_limit <= age && slot.available_capacity > 0)
+            console.log({ date: date, validSlots: validSlots.length })
+            if (validSlots.length > 0) {
+                console.log("Valid vaccination slot(s) found for user " + toEmail + ", sending an email")
+                notifyMe(validSlots, toEmail);
             }
         })
         .catch(function (error) {
@@ -63,19 +67,34 @@ function getSlotsForDate(DATE) {
 
 async function
 
-notifyMe(validSlots){
+    notifyMe(validSlots, toEmail) {
+    let numVaccines = 0;
+    validSlots.forEach(slot => {
+        numVaccines += slot.available_capacity;
+    });
+    let subject = numVaccines + ' vaccines available near you';
     let slotDetails = JSON.stringify(validSlots, null, '\t');
-    notifier.sendEmail(EMAIL, 'VACCINE AVAILABLE', slotDetails, (err, result) => {
-        if(err) {
-            console.error({err});
-        }
-    })
+    if (toEmail.includes(',')) {
+        toEmail.split(',').forEach(email => {
+            notifier.sendEmail(email, subject, slotDetails, (err, result) => {
+                if (err) {
+                    console.error({ err });
+                }
+            })
+        });
+    } else {
+        notifier.sendEmail(toEmail, subject, slotDetails, (err, result) => {
+            if (err) {
+                console.error({ err });
+            }
+        });
+    }
 };
 
-async function fetchNext10Days(){
+async function fetchNext10Days() {
     let dates = [];
     let today = moment();
-    for(let i = 0 ; i < 10 ; i ++ ){
+    for (let i = 0; i < 10; i++) {
         let dateString = today.format('DD-MM-YYYY')
         dates.push(dateString);
         today.add(1, 'day');
@@ -85,4 +104,4 @@ async function fetchNext10Days(){
 
 
 main()
-    .then(() => {console.log('Vaccine availability checker started.');});
+    .then(() => { console.log('Vaccine availability checker started.'); });

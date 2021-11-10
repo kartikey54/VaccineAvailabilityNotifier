@@ -1,0 +1,14 @@
+[
+    {
+        "find_by": "district",
+        "find_value": "363",
+        "age": 30,
+        "to_email": "user1@xyz.com"
+    },
+    {
+        "find_by": "pincode",
+        "find_value": "442401",
+        "age": 32,
+        "to_email": "user1@xyz.com,user2@xyz.com"
+    }
+]
