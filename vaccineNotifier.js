@@ -17,7 +17,7 @@ To close the app, run: pm2 stop vaccineNotifier.js && pm2 delete vaccineNotifier
 const PINCODE = process.env.PINCODE
 const EMAIL = process.env.EMAIL
 const AGE = process.env.AGE
-
+const DISTRICT = process.env.DISTRICT
 async function main(){
     try {
         cron.schedule('* * * * *', async () => {
@@ -40,19 +40,22 @@ async function checkAvailability() {
 function getSlotsForDate(DATE) {
     let config = {
         method: 'get',
-        url: 'https://cdn-api.co-vin.in/api/v2/appointment/sessions/public/findByPin?pincode=' + PINCODE + '&date=' + DATE,
+        url: 'https://cdn-api.co-vin.in/api/v2/appointment/sessions/calendarByDistrict?district_id='+ DISTRICT +'&date='+DATE,
         headers: {
             'accept': 'application/json',
-            'Accept-Language': 'hi_IN'
+            'Accept-Language': 'hi_IN',
+            'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.95 Safari/537.36'
         }
     };
 
     axios(config)
-        .then(function (slots) {
-            let sessions = slots.data.sessions;
+        .then(function ({data:{centers}}) {
+           
+            let sessions = centers.filter((data)=>data.sessions);
             let validSlots = sessions.filter(slot => slot.min_age_limit <= AGE &&  slot.available_capacity > 0)
             console.log({date:DATE, validSlots: validSlots.length})
             if(validSlots.length > 0) {
+                console.log('found something')
                 notifyMe(validSlots);
             }
         })
